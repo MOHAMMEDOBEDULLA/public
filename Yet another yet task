@@ -1,0 +1,60 @@
+import java.io.*;
+import java.util.*;
+
+public class D {
+    public static void main(String[] args) throws Throwable {
+
+        Scanner sc = new Scanner();
+        PrintWriter pw = new PrintWriter(System.out);
+
+        int n = sc.nextInt();
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++)
+            a[i] = sc.nextInt();
+        int ans = 0;
+        for (int mx = 0; mx <= 30; mx++) {
+            int cur = 0;
+            for (int i = 0; i < n; i++) {
+                if (a[i] > mx) {
+                    cur = 0;
+                    continue;
+                }
+                cur += a[i];
+                ans = Math.max(ans, cur - mx);
+                cur = Math.max(cur, 0);
+            }
+        }
+        pw.println(ans);
+
+        pw.close();
+    }
+
+    static class Scanner {
+        StringTokenizer st;
+        BufferedReader br;
+
+        Scanner() {
+            br = new BufferedReader(new InputStreamReader(System.in));
+        }
+
+        Scanner(String s) throws Throwable {
+            br = new BufferedReader(new FileReader(new File(s)));
+        }
+
+        String next() throws Throwable {
+            if (st == null || !st.hasMoreTokens())
+                st = new StringTokenizer(br.readLine());
+            return st.nextToken();
+        }
+
+        int nextInt() throws Throwable {
+            return Integer.parseInt(next());
+        }
+
+        long nextLong() throws Throwable {
+            return Long.parseLong(next());
+        }
+
+    }
+
+}
