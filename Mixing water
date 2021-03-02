@@ -1,0 +1,89 @@
+import java.io.*;
+import java.util.*;
+
+public class F {
+    public static void main(String[] args) throws Throwable {
+
+        Scanner sc = new Scanner();
+        PrintWriter pw = new PrintWriter(System.out);
+
+        int T = sc.nextInt();
+        while (T-- > 0) {
+            h = sc.nextInt();
+            c = sc.nextInt();
+            int t = sc.nextInt();
+            Fraction minDif = new Fraction(Math.abs(t - h), 1);
+            long ans = 1;
+            Fraction avg = getTemp(1, 1);
+            if (avg.subtract(t).compareTo(minDif) < 0) {
+                minDif = avg.subtract(t);
+                ans = 2;
+            }
+            if (2 * t != c + h) {
+                int x = (t - h) / (c + h - 2 * t);
+                for (int cold = Math.max(1, x - 2); cold <= Math.max(1, x + 2); cold++) {
+                    Fraction tmp = getTemp(cold + 1, cold);
+                    if (tmp.subtract(t).compareTo(minDif) < 0) {
+                        minDif = tmp.subtract(t);
+                        ans = 2 * cold + 1;
+                    }
+                }
+            }
+            pw.println(ans);
+        }
+
+        pw.close();
+    }
+
+    static int h, c;
+
+    static Fraction getTemp(long hots, long colds) {
+        return new Fraction(hots * h + colds * c, hots + colds);
+    }
+
+    static class Fraction implements Comparable<Fraction> {
+        long x, y;
+
+        Fraction(long a, long b) {
+            x = a;
+            y = b;
+        }
+
+        public int compareTo(Fraction f) {
+            return Long.compare(Math.abs(x) * Math.abs(f.y), Math.abs(y) * Math.abs(f.x));
+        }
+
+        public Fraction subtract(int n) {
+            return new Fraction(x - n * y, y);
+        }
+    }
+
+    static class Scanner {
+        StringTokenizer st;
+        BufferedReader br;
+
+        Scanner() {
+            br = new BufferedReader(new InputStreamReader(System.in));
+        }
+
+        Scanner(String s) throws Throwable {
+            br = new BufferedReader(new FileReader(new File(s)));
+        }
+
+        String next() throws Throwable {
+            if (st == null || !st.hasMoreTokens())
+                st = new StringTokenizer(br.readLine());
+            return st.nextToken();
+        }
+
+        int nextInt() throws Throwable {
+            return Integer.parseInt(next());
+        }
+
+        long nextLong() throws Throwable {
+            return Long.parseLong(next());
+        }
+
+    }
+
+}
